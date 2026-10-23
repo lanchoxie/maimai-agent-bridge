@@ -1,0 +1,40 @@
+diff --git a/src/maisaka/reasoning_engine.py b/src/maisaka/reasoning_engine.py
+index bc31c92..e07695c 100644
+--- a/src/maisaka/reasoning_engine.py
++++ b/src/maisaka/reasoning_engine.py
+@@ -166,6 +166,7 @@ class MaisakaReasoningEngine:
+         self._runtime = runtime
+         self._last_reasoning_content: str = ""
+         self._active_logical_turn_id: str | None = None
++        self._tool_user_id: str = ""
+ 
+     @property
+     def last_reasoning_content(self) -> str:
+@@ -579,6 +580,9 @@ class MaisakaReasoningEngine:
+     ) -> None:
+         """准备上下文并执行一次 Planner 请求。"""
+ 
++        # 群会话的 user_id 为空；按本轮真实触发消息鉴权，避免思考期间
++        # chat_stream.context 被后来收到的其他用户消息更新而串用身份。
++        self._tool_user_id = str(trigger_message.message_info.user_info.user_id or "").strip()
+         planner_started_at = time.time()
+         state.planner_started_at = planner_started_at
+         self._runtime._update_stage_status("组织上下文", "整理消息、参考信息与可用工具", round_text=round_text)
+@@ -1505,7 +1509,7 @@ class MaisakaReasoningEngine:
+             stream_id=self._runtime.session_id,
+             is_group_chat=chat_stream.is_group_session,
+             group_id=str(getattr(chat_stream, "group_id", "") or "").strip(),
+-            user_id=str(getattr(chat_stream, "user_id", "") or "").strip(),
++            user_id=self._tool_user_id,
+             platform=str(getattr(chat_stream, "platform", "") or "").strip(),
+         )
+ 
+@@ -1529,7 +1533,7 @@ class MaisakaReasoningEngine:
+             reasoning=latest_thought,
+             is_group_chat=chat_stream.is_group_session,
+             group_id=str(getattr(chat_stream, "group_id", "") or "").strip(),
+-            user_id=str(getattr(chat_stream, "user_id", "") or "").strip(),
++            user_id=self._tool_user_id,
+             platform=str(getattr(chat_stream, "platform", "") or "").strip(),
+         )
+ 

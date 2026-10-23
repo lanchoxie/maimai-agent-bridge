@@ -1,0 +1,82 @@
+[plugin]
+enabled = true
+config_version = "0.5.0"
+
+[access]
+# 必须填你本人的 QQ 号，不是机器人账号。空列表会拒绝所有 QQ 调用。
+allowed_users = []
+allowed_groups = []
+
+[codex]
+executable = ""
+workspace = ""
+model = ""
+reasoning_effort = ""
+sandbox = "read-only"
+allowed_roots = []
+allow_saved_threads = false
+task_timeout_seconds = 1800
+max_concurrent = 3
+max_active_sessions = 3
+max_queued = 10
+
+[files]
+enabled = true
+auto_send = true
+max_file_mb = 20
+max_files = 5
+
+[instances]
+buffer_dir = ""
+scan_roots = []
+max_index_entries = 1000
+configured = []
+
+# 添加实例时删除上一行 configured = []，然后使用下列配置块。
+# 本地/Conda 示例：executable 为 Codex 原生程序，conda_prefix 可选。
+# [[instances.configured]]
+# id = "conda-work"
+# transport = "stdio"
+# executable = "C:/miniconda3/envs/work/codex.exe"
+# conda_prefix = "C:/miniconda3/envs/work"
+# codex_home = "C:/Users/me/.codex-work"
+# workspace = "C:/projects/work"
+# allowed_roots = ["C:/projects"]
+# allow_saved_threads = true
+# api_base_url = "https://your-responses-provider.example/v1"
+# api_key_env = "WORK_CODEX_API_KEY"
+
+# SSH 示例：服务器使用密钥登录，先在本机 SSH 建立 known_hosts 记录。
+# [[instances.configured]]
+# id = "linux-server"
+# transport = "ssh"
+# ssh_target = "me@server.example"
+# ssh_port = 22
+# executable = "/home/me/.local/bin/codex"
+# workspace = "/home/me/projects"
+# allowed_roots = ["/home/me/projects"]
+# allow_saved_threads = true
+# conda_executable = "/home/me/miniconda3/bin/conda"
+# conda_prefix = "/home/me/miniconda3/envs/agent"
+# codex_home = "/home/me/.codex"
+# 模型 API 可使用服务器已登录的 Codex，也可设置 api_base_url/api_key_env。
+# SSH 的 api_key_env 指服务器环境变量，不传输本机密钥。
+
+# WebSocket 示例：配置好服务端的登录/模型/Conda 环境，客户端只连接。
+# [[instances.configured]]
+# id = "ws-server"
+# transport = "websocket"
+# endpoint = "wss://codex.example.com"
+# token_env = "REMOTE_CODEX_TOKEN"
+# workspace = "/home/me/projects"
+# allowed_roots = ["/home/me/projects"]
+# allow_saved_threads = true
+
+[remote]
+agents = []
+
+# [[remote.agents]]
+# name = "research"
+# endpoint = "http://127.0.0.1:9100"
+# protocol = "1.0-rest"
+# token_env = "RESEARCH_AGENT_TOKEN"

@@ -1,0 +1,26 @@
+[project]
+name = "maimai-agent-bridge"
+version = "0.5.0"
+description = "MaiBot plugin for Codex sessions, remote instances, A2A tasks and QQ file delivery"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{name = "lanchoxie"}]
+dependencies = [
+    "maibot-plugin-sdk==2.12.0",
+    "httpx>=0.27,<1",
+    "websockets>=15,<17",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.12,<1"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py312"
+line-length = 140
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
