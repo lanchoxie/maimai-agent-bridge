@@ -107,9 +107,9 @@ class InstanceTests(unittest.IsolatedAsyncioTestCase):
             client = self.service.instances.connect("conda")
             self.assertIn("secret-api-test", client.environment.values())
             self.assertEqual(client.environment["OTHER_TOKEN"], "other-secret-test")
-            self.assertEqual(client.environment["CODEX_HOME"], str(prefix / ".codex"))
+            self.assertEqual(client.environment["CODEX_HOME"], str((prefix / ".codex").resolve()))
             self.assertNotIn("secret-api-test", " ".join(client.command))
-            self.assertTrue(client.environment["PATH"].startswith(str(prefix)))
+            self.assertTrue(client.environment["PATH"].startswith(str(prefix.resolve())))
             self.assertNotEqual(os.environ.get("CODEX_HOME"), client.environment["CODEX_HOME"])
             self.assertNotIn("other-secret-test", self.service.instances.scrub("error other-secret-test"))
             self.remote.api_base_url = item.api_base_url
@@ -220,4 +220,5 @@ class DiscoveryTests(unittest.TestCase):
                 second = discover([str(home / "npm")])
             self.assertEqual(first, second)
             self.assertEqual(len(first), 2)
-            self.assertEqual(next(row for row in first if row["executable"] == str(executable))["conda_prefix"], str(prefix))
+            match = next(row for row in first if Path(row["executable"]) == executable.resolve())
+            self.assertEqual(Path(match["conda_prefix"]).resolve(), prefix.resolve())
