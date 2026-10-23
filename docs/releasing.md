@@ -10,9 +10,9 @@
 
 ```text
 uv sync
-uv run python scripts/check_release.py
+uv run python -X utf8 scripts/check_release.py
 uv run ruff check .
-uv run python scripts/run_tests.py
+uv run python -X utf8 scripts/run_tests.py
 ```
 
 测试只使用本地临时数据、HTTP mock 和回环 WebSocket，不读取真实 Codex 登录，不向 QQ 发消息，也不消耗模型额度。`tests/smoke_*.py` 是单独手动运行的真实 Codex 联调，不由上述测试自动执行。

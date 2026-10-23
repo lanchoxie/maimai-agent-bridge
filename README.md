@@ -235,9 +235,9 @@ Codex 请求补充时使用 `/agent reply`；如出现审批，只有本人 QQ �
 
 ```text
 uv sync
-uv run python scripts/check_release.py
+uv run python -X utf8 scripts/check_release.py
 uv run ruff check .
-uv run python scripts/run_tests.py
+uv run python -X utf8 scripts/run_tests.py
 ```
 
 测试不需要 MaiBot 仓库、真实 Codex 登录或 QQ 账号；GitHub Actions 在 Windows 和 Linux 上执行相同检查。
